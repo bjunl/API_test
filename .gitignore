@@ -120,3 +120,6 @@ dmypy.json
 
 # pytest
 .pytest_cache
+
+# MacOS
+.DS_Store
