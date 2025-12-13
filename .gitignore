@@ -123,3 +123,5 @@ dmypy.json
 
 # MacOS
 .DS_Store
+
+test-data/*

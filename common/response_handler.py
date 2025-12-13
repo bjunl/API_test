@@ -1,11 +1,11 @@
-from typing import  ByteString, Dict
+from typing import Dict
 from xml.etree import ElementTree as ETree
 from requests import Response, JSONDecodeError
 
 
 def __parse_json(response: Response) -> Dict | None:
     """
-    解析响应的JSON数据并返回解析结果。
+    解析响应的JSON数据并返回解析结果
     如果解析失败，则返回None。
     """
     try:
@@ -27,7 +27,7 @@ def __parse_xml(response: Response) -> ETree.Element | None:
 
 
 
-def response_handler(response: Response) -> Dict | ETree.Element | str | ByteString | int| None:
+def response_handler(response: Response) -> Dict | ETree.Element | str | bytes | int | None:
     """
     根据响应的内容类型处理响应数据并返回处理结果。
     可能的返回值类型为JSON字典、XML元素、纯文本字符串或原始字节流。
@@ -35,7 +35,7 @@ def response_handler(response: Response) -> Dict | ETree.Element | str | ByteStr
     Args:
     - response: requests.Response对象，表示HTTP响应。
 
-    Returns5
+    Returns:
     - Union[Dict, ET.Element, str, bytes]: 处理后的响应数据，类型可能是字典、XML元素、字符串或字节流。
     """
 
