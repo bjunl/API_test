@@ -125,3 +125,6 @@ dmypy.json
 .DS_Store
 
 test-data/*
+!test-data/.gitkeep
+
+uv.lock
