@@ -1,8 +1,7 @@
 import re
-import logging
 from typing import Dict, Any, List, Tuple
 from utils import yaml_util
-from constant import variable_cache
+from constant.constant import variable_cache
 
 
 def replace_url(url: str) -> str:
