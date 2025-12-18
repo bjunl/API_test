@@ -1,8 +1,7 @@
 import re
-import logging
 from typing import Dict, Any, List, Tuple
 from utils import yaml_util
-from constant import variable_cache
+from constant.constant import get_variable
 
 
 def replace_url(url: str) -> str:
@@ -37,7 +36,7 @@ def replace_url(url: str) -> str:
             replacements[f"${{{var_name}}}"] = host_config[var_name]
         # 其次从variable_cache获取
         else:
-            cache_value = variable_cache.get_value(var_name)
+            cache_value = get_variable(var_name)
             if cache_value is not None:
                 replacements[f"${{{var_name}}}"] = cache_value
     
