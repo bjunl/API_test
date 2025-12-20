@@ -33,3 +33,5 @@ def data_processing(excel_dict: Dict) -> Dict[str, str | MultipartEncoder | Dict
         value = excel_dict["data"]
         excel_dict['json'] = value
         excel_dict.pop("data")
+
+    return excel_dict
