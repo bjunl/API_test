@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from utils import excel_util,yaml_util
 
 class FileTypeUtil:
     """文件类型判断辅助类"""
@@ -20,10 +20,10 @@ class FileTypeUtil:
         suffix = Path(file_path).suffix.lower()
         
         if suffix in ['.xlsx', '.xls']:
-            return 'Excel'
+            return excel_util.read_excel(file_path=file_path)
         elif suffix == '.json':
             return 'Json'
         elif suffix in ['.yaml', '.yml']:
-            return 'Yaml'
+            return yaml_util.read_yaml(file_path=file_path)
         else:
             raise ValueError(f"不支持的文件类型: {suffix}")
