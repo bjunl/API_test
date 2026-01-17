@@ -4,7 +4,7 @@ import yaml
 from typing import Any, Dict, List, Optional
 
 
-def read_yaml(file_path: str) -> Optional[Dict[str, Any]]:
+def read_yaml_case(file_path: str) -> Optional[List[Dict[str, Any]]]:
     """
     Read YAML file content
     
@@ -62,7 +62,7 @@ if __name__ == '__main__':
             "name": "test_db"
         }
     }
-    
+
     # Test write and read functionality
     test_file = "test_config.yaml"
     if write_yaml(test_file, sample_data):

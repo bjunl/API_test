@@ -29,7 +29,7 @@ class ExcelUtil:
             raise ValueError("Excel文件不包含任何工作表")
 
 
-def read_excel(file_path: str, sheet_name: Optional[str] = None, 
+def read_excel_case(file_path: str, sheet_name: Optional[str] = None, 
               start_row: int = 2, auto_parse_json: bool = True) -> List[Dict[str, Any]]:
     """
     读取Excel文件并将其数据转换为字典列表

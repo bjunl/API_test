@@ -20,10 +20,9 @@ class FileTypeUtil:
         suffix = Path(file_path).suffix.lower()
         
         if suffix in ['.xlsx', '.xls']:
-            return excel_util.read_excel(file_path=file_path)
-        elif suffix == '.json':
-            return 'Json'
+            return excel_util.read_excel_case(file_path=file_path)
+       
         elif suffix in ['.yaml', '.yml']:
-            return yaml_util.read_yaml(file_path=file_path)
+            return yaml_util.read_yaml_case(file_path=file_path)
         else:
             raise ValueError(f"不支持的文件类型: {suffix}")

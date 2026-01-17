@@ -1,0 +1,16 @@
+# 全局host
+Host:
+ - host1: "https:test.com"
+
+# 全局header
+Header:
+
+
+# timeout
+Timeout: 10
+
+
+verify: false
+
+
+allow_redirects: True
