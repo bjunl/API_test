@@ -3,6 +3,7 @@ from typing import Dict, Any
 from common.send_request import SendRequest
 from constant.constant import variable_cache
 from fixture.data_fixture import data_processing
+from utils.assertion_util import *
 
 
 class TestFullAPI:
@@ -96,10 +97,8 @@ class TestFullAPI:
                 pytest.fail(f"测试 '{test_name}' 应该失败但实际成功了")
             
             # 断言验证状态码
-            assert response.status_code in expected_status_codes, (
-                f"测试 '{test_name}' 失败: "
-                f"期望状态码 {expected_status_codes}, 实际状态码 {response.status_code}"
-            )
+            assert_status_code(response, expected_status_codes)
+            assert_body_value(response, "$.id", "1")
             
             # 保存响应结果到全局变量缓存（可选）
             if response.status_code < 400:  # 只在成功响应时保存

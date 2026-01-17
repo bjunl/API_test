@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import BinaryIO, Dict
-
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 
