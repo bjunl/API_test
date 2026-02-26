@@ -1,5 +1,5 @@
-from common.response_handler import response_handler
-from fixture.jsonpath_fixture import jsonpath_fixture
+from core.http.response import response_handler
+from utils.jsonpath import jsonpath
 from requests import Response
 import re
 
@@ -44,7 +44,7 @@ def assert_body_value(response: Response, exp: str, expected_value: str) -> None
     
     elif isinstance(value, dict):
         # JSON响应，使用JSONPath提取值
-        extracted_values = jsonpath_fixture(value, exp)
+        extracted_values = jsonpath(value, exp)
         assert extracted_values, f"JSONPath '{exp}' 未找到任何匹配的值"
         assert extracted_values[0] == expected_value, f"提取值 '{extracted_values[0]}' 不等于期望值 '{expected_value}'"
     

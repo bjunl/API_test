@@ -1,13 +1,8 @@
 import re
 import pathlib
-import sys
 from typing import Dict, Any, List, Tuple, Optional
-
-# 添加项目根目录到Python路径
-sys.path.insert(0, str(pathlib.Path(__file__).parent.parent))
-
-from utils import yaml_util
-from constant.constant import get_variable 
+from utils.config import read_config
+from utils.constant import get_variable
 
 # 缓存配置，避免重复读取文件
 _CONFIG_CACHE: Optional[Dict[str, Any]] = None
@@ -109,7 +104,7 @@ def get_config() -> Dict[str, Any]:
     if _CONFIG_CACHE is None:
         try:
             config_path = config_yaml_path()
-            _CONFIG_CACHE = yaml_util.read_yaml(config_path) or {}
+            _CONFIG_CACHE = read_config()
         except Exception:
             _CONFIG_CACHE = {}
     return _CONFIG_CACHE
@@ -124,7 +119,7 @@ def clear_config_cache() -> None:
     _CONFIG_CACHE = None
 
 if __name__ == "__main__":
-    from constant.constant import set_variable
+    from utils.constant import set_variable
     # 测试配置路径读取
     set_variable("user_id",1)
     set_variable("username", "123")

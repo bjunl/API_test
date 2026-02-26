@@ -5,7 +5,7 @@ from requests import Request, Response, Session
 type MethodType = Literal["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
 
 
-class SendRequest:
+class HTTPClient:
     """HTTP请求发送工具类
 
     该类封装了requests库，提供了一个简洁的接口来发送各种类型的HTTP请求。
@@ -19,7 +19,7 @@ class SendRequest:
         """
         self.__session = Session()
 
-    def send(
+    def send_request(
         self,
         method: MethodType,
         url: str,

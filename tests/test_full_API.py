@@ -1,7 +1,7 @@
 import pytest
-from common.send_request import SendRequest
-from constant.constant import variable_cache
-from utils.assertion_util import *
+from core.http.client import HTTPClient
+from utils.constant import variable_cache
+from core.assertion.assertion import *
 
 
 class TestFullAPI:
@@ -12,18 +12,18 @@ class TestFullAPI:
     
     def setup_class(self):
         """测试类初始化"""
-        self.send_request = SendRequest()
+        self.http_client = HTTPClient()
         
     def teardown_class(self):
         """测试类清理"""
         # 清理全局变量缓存
         variable_cache.clear()
     @pytest.mark.parametrize("case_data_path", get_test_data_path())
-    def test_api_with_excel_data(self, case_data_path, get_case_data):
+    def test_api_with_excel_data(self, case_data_path, get_test_case_data):
 
-        for index, case_data in enumerate(get_case_data, 2):
+        for index, case_data in enumerate(get_test_case_data, 2):
 
-            response_data =self.send_request.send(method=case_data.get("method"),
+            response_data =self.http_client.send_request(method=case_data.get("method"),
                                                   url=case_data.get("url"),
                                                   headers=case_data.get("header"),
                                                   params=case_data.get("params"),
@@ -34,7 +34,7 @@ class TestFullAPI:
 
 
             for i in case_data.get("exception"):
-                if i.get["asset_type"]) == "status_code":
-                    assert_status_code(response_data.status_code,i.get("excpect_value"))
+                if i.get("asset_type") == "status_code":
+                    assert_status_code(response_data,i.get("excpect_value"))
                 assert_body_value(response_data, exp=i.get("exp"),expected_value=i.get("excpect_value"))
 

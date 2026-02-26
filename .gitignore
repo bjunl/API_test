@@ -124,7 +124,7 @@ dmypy.json
 # MacOS
 .DS_Store
 
-test-data/*
-!test-data/.gitkeep
+test_data/*
+!test_data/.gitkeep
 
 uv.lock

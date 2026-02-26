@@ -1,12 +1,10 @@
-
-# read yaml file
 import yaml
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 
-def read_yaml_case(file_path: str) -> Optional[List[Dict[str, Any]]]:
+def yaml_reader(file_path: str) -> Optional[list[dict[str, Any]]]:
     """
-    Read YAML file content
+    Read YAML file content and return it as a dictionary.
     
     Args:
         file_path (str): Path to the YAML file
