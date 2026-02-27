@@ -1,5 +1,7 @@
 from typing import Any, Dict, Literal, Optional
 from requests import Request, Response, Session
+import time
+from utils.logger import logger
 
 
 type MethodType = Literal["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
@@ -18,6 +20,7 @@ class HTTPClient:
         创建一个requests.Session对象用于管理HTTP连接。
         """
         self.__session = Session()
+        logger.debug("HTTPClient初始化完成")
 
     def send_request(
         self,
@@ -51,18 +54,32 @@ class HTTPClient:
         Returns:
             Response: HTTP响应对象，包含响应状态码、响应头和响应体等信息
         """
-        request = Request(
-            method=method,
-            url=url,
-            headers=headers,
-            files=files,
-            data=data,
-            params=params,
-            json=json,
-            cookies=cookies,
-            hooks=hooks,
-            auth=auth,
-        )
-        prepared_request = request.prepare()
-        response = self.__session.send(prepared_request, timeout=timeout)
-        return response
+        logger.info(f"开始发送HTTP请求: {method} {url}")
+        logger.debug(f"请求参数 - headers: {headers}, params: {params}, data: {data}, json: {json}, files: {files}, timeout: {timeout}")
+        
+        start_time = time.time()
+        
+        try:
+            request = Request(
+                method=method,
+                url=url,
+                headers=headers,
+                files=files,
+                data=data,
+                params=params,
+                json=json,
+                cookies=cookies,
+                hooks=hooks,
+                auth=auth,
+            )
+            prepared_request = request.prepare()
+            response = self.__session.send(prepared_request, timeout=timeout)
+            
+            elapsed_time = time.time() - start_time
+            logger.info(f"HTTP请求完成: {method} {url} - 状态码: {response.status_code}, 耗时: {elapsed_time:.3f}秒")
+            
+            return response
+        except Exception as e:
+            elapsed_time = time.time() - start_time
+            logger.error(f"HTTP请求失败: {method} {url} - 错误: {e}, 耗时: {elapsed_time:.3f}秒")
+            raise

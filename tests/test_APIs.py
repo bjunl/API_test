@@ -1,6 +1,8 @@
 import pytest
 from core.http.client import HTTPClient
 from utils.constant import variable_cache
+from utils.jsonpath import jsonpath
+from core.http.response import response_handler
 from core.assertion.assertion import *
 
 
@@ -37,4 +39,9 @@ class TestFullAPI:
                 if i.get("asset_type") == "status_code":
                     assert_status_code(response_data,i.get("excpect_value"))
                 assert_body_value(response_data, exp=i.get("exp"),expected_value=i.get("excpect_value"))
+
+            if case_data.get("variable",{}) :
+                for var_name, var_value in case_data.get("variable",{}).items():
+                    var_value = jsonpath(var_value, response_handler(response_data))
+                    variable_cache.set_variable(var_name, var_value)
 
