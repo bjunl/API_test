@@ -1,16 +1,11 @@
-# 全局host
+# 全局host配置
 Host:
- - host1: "https:test.com"
-
-# 全局header
-Header:
-
-
-# timeout
-Timeout: 10
-
-
-verify: false
-
-
-allow_redirects: True
+  - name: "host1"
+    url: "https://test.com"
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer"
+  
+# 全局通用header
+GlobalHeaders:
+  User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
