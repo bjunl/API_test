@@ -2,7 +2,7 @@ import re
 import pathlib
 from typing import Dict, Any, List, Tuple, Optional
 from utils.config import read_config
-from utils.constant import get_variable
+from utils import get_variable
 
 # 缓存配置，避免重复读取文件
 _CONFIG_CACHE: Optional[Dict[str, Any]] = None
