@@ -1,8 +1,6 @@
 import re
 from typing import Dict, Any, List, Tuple
-from utils import config_reader
-from utils import constant
-
+from utils import config_reader, constant, logger
 
 
 def replace_url(url: str) -> str:
@@ -15,13 +13,19 @@ def replace_url(url: str) -> str:
     Returns:
         str: 替换后的URL字符串
     """
+    logger.debug(f"开始替换URL变量，原始URL: {url}")
+
     if not url:
+        logger.warning("URL为空，跳过替换")
         return url
 
     # 查找所有形如 ${variable_name} 的变量
     keys = re.findall(r"\$\{([a-zA-Z0-9_]+)\}", url)
     if not keys:
+        logger.debug("URL中未找到需要替换的变量")
         return url
+
+    logger.info(f"在URL中找到 {len(keys)} 个需要替换的变量: {keys}")
 
     # 获取host配置
     config: Dict[str, Any] = config_reader.get_config()
@@ -36,6 +40,9 @@ def replace_url(url: str) -> str:
             if host_item.get("name") == var_name:
                 replacements[f"${{{var_name}}}"] = str(host_item.get("url", ""))
                 replacement_found = True
+                logger.debug(
+                    f"从host配置中找到变量 '{var_name}' 的值: {host_item.get('url', '')}"
+                )
                 break
 
         # 如果host配置中没找到，从variable_cache获取
@@ -43,12 +50,16 @@ def replace_url(url: str) -> str:
             cache_value = constant.get_variable(var_name)
             if cache_value is not None:
                 replacements[f"${{{var_name}}}"] = str(cache_value)
+                logger.debug(f"从变量缓存中找到变量 '{var_name}' 的值: {cache_value}")
+            else:
+                logger.warning(f"未找到变量 '{var_name}' 的值，跳过替换")
 
     # 执行替换
     result_url = url
     for placeholder, value in replacements.items():
         result_url = result_url.replace(placeholder, str(value))
 
+    logger.info(f"URL变量替换完成，结果: {result_url}")
     return result_url
 
 
@@ -62,7 +73,10 @@ def replace_data(data: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: 替换后的字典副本
     """
+    logger.debug(f"开始替换数据中的变量，原始数据: {data}")
+
     if not isinstance(data, dict):
+        logger.warning(f"输入数据不是字典类型，类型为: {type(data)}")
         return {}
 
     # 深拷贝数据避免修改原字典
@@ -77,6 +91,7 @@ def replace_data(data: Dict[str, Any]) -> Dict[str, Any]:
     for key in result:
         stack.append((result, key))
 
+    replaced_count = 0
     while stack:
         current_dict, key = stack.pop()
         value = current_dict[key]
@@ -87,13 +102,19 @@ def replace_data(data: Dict[str, Any]) -> Dict[str, Any]:
                 replacement = constant.get_variable(var_name)
                 if replacement is not None:
                     current_dict[key] = replacement
+                    replaced_count += 1
+                    logger.debug(f"成功替换变量 '{var_name}' 的值为: {replacement}")
+                else:
+                    logger.warning(f"未找到变量 '{var_name}' 的值，跳过替换")
             except Exception as e:
-                print(f"Warning: Failed to replace variable '{var_name}': {e}")
+                logger.error(f"替换变量 '{var_name}' 时发生异常: {e}")
         elif isinstance(value, dict):
             # 将子字典的键值对加入栈中
             for sub_key in value:
                 stack.append((value, sub_key))
 
+    logger.info(f"数据变量替换完成，共替换了 {replaced_count} 个变量")
+    logger.info(f"数据变量替换结果: {result}")
     return result
 
 
